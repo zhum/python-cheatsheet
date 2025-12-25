@@ -43,7 +43,7 @@ const TOC =
   '</code></pre>\n';
 
 const BIN_HEX =
-  '&lt;int&gt; = <span class="hljs-number">0x</span>&lt;hex&gt;                                <span class="hljs-comment"># E.g. `0xFF == 255`. Also 0b&lt;bin&gt;.</span>\n' +
+  '&lt;int&gt; = <span class="hljs-number">0x</span>&lt;hex&gt;                                <span class="hljs-comment"># E.g. `0xFf == 255`. Also 0b&lt;bin&gt;.</span>\n' +
   '&lt;int&gt; = int(<span class="hljs-string">\'±&lt;hex&gt;\'</span>, <span class="hljs-number">16</span>)                      <span class="hljs-comment"># Also int(\'±0x&lt;hex&gt;/±0b&lt;bin&gt;\', 0).</span>\n' +
   '&lt;str&gt; = hex(&lt;int&gt;)                             <span class="hljs-comment"># Returns \'[-]0x&lt;hex&gt;\'. Also bin().</span>\n';
 
@@ -79,10 +79,10 @@ const PARAMETRIZED_DECORATOR =
   '    <span class="hljs-keyword">return</span> x + y\n';
 
 const REPR_USE_CASES =
-  'print/str/repr([&lt;obj&gt;])\n' +
-  'print/str/repr({&lt;obj&gt;: &lt;obj&gt;})\n' +
-  '<span class="hljs-string">f\'<span class="hljs-subst">{&lt;obj&gt;!r}</span>\'</span>\n' +
-  'Z = make_dataclass(<span class="hljs-string">\'Z\'</span>, [<span class="hljs-string">\'a\'</span>]); print/str/repr(Z(&lt;obj&gt;))\n';
+  '<span class="hljs-string">f\'<span class="hljs-subst">{obj!r}</span>\'</span>\n' +
+  'print/str/repr([obj])\n' +
+  'print/str/repr({obj: obj})\n' +
+  'print/str/repr(&lt;dataclass&gt;(obj))\n';
 
 const CONSTRUCTOR_OVERLOADING =
   '<span class="hljs-class"><span class="hljs-keyword">class</span> &lt;<span class="hljs-title">name</span>&gt;:</span>\n' +
@@ -90,14 +90,14 @@ const CONSTRUCTOR_OVERLOADING =
   '        self.a = a\n';
 
 const SHUTIL_COPY =
-  'shutil.copy(from, to)               <span class="hljs-comment"># Copies the file. \'to\' can exist or be a dir.</span>\n' +
-  'shutil.copy2(from, to)              <span class="hljs-comment"># Also copies creation and modification time.</span>\n' +
-  'shutil.copytree(from, to)           <span class="hljs-comment"># Copies the directory. \'to\' must not exist.</span>\n';
+  'shutil.copy(from, to)            <span class="hljs-comment"># Copies the file (\'to\' can exist or be a dir).</span>\n' +
+  'shutil.copy2(from, to)           <span class="hljs-comment"># Also copies creation and modification time.</span>\n' +
+  'shutil.copytree(from, to)        <span class="hljs-comment"># Copies the directory (\'to\' should not exist).</span>\n';
 
 const OS_RENAME =
-  'os.rename(from, to)                 <span class="hljs-comment"># Renames/moves the file or directory.</span>\n' +
-  'os.replace(from, to)                <span class="hljs-comment"># Same, but overwrites file \'to\' even on Windows.</span>\n' +
-  'shutil.move(from, to)               <span class="hljs-comment"># Rename() that moves into \'to\' if it\'s a dir.</span>\n';
+  'os.rename(from, to)              <span class="hljs-comment"># Renames or moves the file or directory \'from\'.</span>\n' +
+  'os.replace(from, to)             <span class="hljs-comment"># Same, but overwrites file \'to\' even on Windows.</span>\n' +
+  'shutil.move(from, to)            <span class="hljs-comment"># Rename() that moves into \'to\' if it is a dir.</span>\n';
 
 const STRUCT_FORMAT =
   '<span class="hljs-section">\'&lt;n&gt;s\'</span><span class="hljs-attribute"></span>';
@@ -120,12 +120,12 @@ const MATCH_EXAMPLE =
 const COROUTINES =
   '<span class="hljs-keyword">import</span> asyncio, collections, curses, curses.textpad, enum, random\n' +
   '\n' +
-  'P = collections.namedtuple(<span class="hljs-string">\'P\'</span>, <span class="hljs-string">\'x y\'</span>)     <span class="hljs-comment"># Position</span>\n' +
-  'D = enum.Enum(<span class="hljs-string">\'D\'</span>, <span class="hljs-string">\'n e s w\'</span>)              <span class="hljs-comment"># Direction</span>\n' +
-  'W, H = <span class="hljs-number">15</span>, <span class="hljs-number">7</span>                               <span class="hljs-comment"># Width, Height</span>\n' +
+  'P = collections.namedtuple(<span class="hljs-string">\'P\'</span>, <span class="hljs-string">\'x y\'</span>)     <span class="hljs-comment"># Position (x and y coordinates).</span>\n' +
+  'D = enum.Enum(<span class="hljs-string">\'D\'</span>, <span class="hljs-string">\'n e s w\'</span>)              <span class="hljs-comment"># Direction (north, east, etc.).</span>\n' +
+  'W, H = <span class="hljs-number">15</span>, <span class="hljs-number">7</span>                               <span class="hljs-comment"># Width and height of the field.</span>\n' +
   '\n' +
   '<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">main</span><span class="hljs-params">(screen)</span>:</span>\n' +
-  '    curses.curs_set(<span class="hljs-number">0</span>)                     <span class="hljs-comment"># Makes cursor invisible.</span>\n' +
+  '    curses.curs_set(<span class="hljs-number">0</span>)                     <span class="hljs-comment"># Makes the cursor invisible.</span>\n' +
   '    screen.nodelay(<span class="hljs-keyword">True</span>)                   <span class="hljs-comment"># Makes getch() non-blocking.</span>\n' +
   '    asyncio.run(main_coroutine(screen))    <span class="hljs-comment"># Starts running asyncio code.</span>\n' +
   '\n' +
@@ -133,7 +133,7 @@ const COROUTINES =
   '    moves = asyncio.Queue()\n' +
   '    state = {<span class="hljs-string">\'*\'</span>: P(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>)} | {id_: P(W//<span class="hljs-number">2</span>, H//<span class="hljs-number">2</span>) <span class="hljs-keyword">for</span> id_ <span class="hljs-keyword">in</span> range(<span class="hljs-number">10</span>)}\n' +
   '    ai    = [random_controller(id_, moves) <span class="hljs-keyword">for</span> id_ <span class="hljs-keyword">in</span> range(<span class="hljs-number">10</span>)]\n' +
-  '    mvc   = [human_controller(screen, moves), model(moves, state), view(state, screen)]\n' +
+  '    mvc   = [controller(screen, moves), model(moves, state), view(state, screen)]\n' +
   '    tasks = [asyncio.create_task(coro) <span class="hljs-keyword">for</span> coro <span class="hljs-keyword">in</span> ai + mvc]\n' +
   '    <span class="hljs-keyword">await</span> asyncio.wait(tasks, return_when=asyncio.FIRST_COMPLETED)\n' +
   '\n' +
@@ -143,7 +143,7 @@ const COROUTINES =
   '        moves.put_nowait((id_, d))\n' +
   '        <span class="hljs-keyword">await</span> asyncio.sleep(random.triangular(<span class="hljs-number">0.01</span>, <span class="hljs-number">0.65</span>))\n' +
   '\n' +
-  '<span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">human_controller</span><span class="hljs-params">(screen, moves)</span>:</span>\n' +
+  '<span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">controller</span><span class="hljs-params">(screen, moves)</span>:</span>\n' +
   '    <span class="hljs-keyword">while</span> <span class="hljs-keyword">True</span>:\n' +
   '        key_mappings = {<span class="hljs-number">258</span>: D.s, <span class="hljs-number">259</span>: D.n, <span class="hljs-number">260</span>: D.w, <span class="hljs-number">261</span>: D.e}\n' +
   '        <span class="hljs-keyword">if</span> d := key_mappings.get(screen.getch()):\n' +
@@ -207,11 +207,13 @@ const PROGRESS_BAR =
 const LOGGING_EXAMPLE =
   '<span class="hljs-meta">&gt;&gt;&gt; </span>logger = log.getLogger(<span class="hljs-string">\'my_module\'</span>)\n' +
   '<span class="hljs-meta">&gt;&gt;&gt; </span>handler = log.FileHandler(<span class="hljs-string">\'test.log\'</span>, encoding=<span class="hljs-string">\'utf-8\'</span>)\n' +
-  '<span class="hljs-meta">&gt;&gt;&gt; </span>handler.setFormatter(log.Formatter(<span class="hljs-string">\'%(asctime)s %(levelname)s:%(name)s:%(message)s\'</span>))\n' +
+  '<span class="hljs-meta">&gt;&gt;&gt; </span>format_str = <span class="hljs-string">\'%(asctime)s %(levelname)s:%(name)s:%(message)s\'</span>\n' +
+  '<span class="hljs-meta">&gt;&gt;&gt; </span>handler.setFormatter(log.Formatter(format_str))\n' +
   '<span class="hljs-meta">&gt;&gt;&gt; </span>logger.addHandler(handler)\n' +
   '<span class="hljs-meta">&gt;&gt;&gt; </span>logger.setLevel(<span class="hljs-string">\'DEBUG\'</span>)\n' +
   '<span class="hljs-meta">&gt;&gt;&gt; </span>log.basicConfig()\n' +
-  '<span class="hljs-meta">&gt;&gt;&gt; </span>log.root.handlers[<span class="hljs-number">0</span>].setLevel(<span class="hljs-string">\'WARNING\'</span>)\n' +
+  '<span class="hljs-meta">&gt;&gt;&gt; </span>roots_handler = log.root.handlers[<span class="hljs-number">0</span>]\n' +
+  '<span class="hljs-meta">&gt;&gt;&gt; </span>roots_handler.setLevel(<span class="hljs-string">\'WARNING\'</span>)\n' +
   '<span class="hljs-meta">&gt;&gt;&gt; </span>logger.critical(<span class="hljs-string">\'Running out of disk space.\'</span>)\n' +
   'CRITICAL:my_module:Running out of disk space.\n' +
   '<span class="hljs-meta">&gt;&gt;&gt; </span>print(open(<span class="hljs-string">\'test.log\'</span>).read())\n' +
@@ -325,19 +327,19 @@ const GROUPBY =
   '<span class="hljs-number">6</span>  <span class="hljs-number">11</span>  <span class="hljs-number">13</span>';
 
 const CYTHON_1 =
-  '<span class="hljs-keyword">cdef</span> &lt;type&gt; &lt;var_name&gt; [= &lt;obj/var&gt;]                <span class="hljs-comment"># Either Python or C type variable.</span>\n' +
-  '<span class="hljs-keyword">cdef</span> &lt;ctype&gt; *&lt;pointer_name&gt; [= &amp;&lt;var&gt;]             <span class="hljs-comment"># Use &lt;pointer&gt;[0] to get the value.</span>\n' +
-  '<span class="hljs-keyword">cdef</span> &lt;ctype&gt;[size] &lt;array_name&gt; [= &lt;coll/array&gt;]    <span class="hljs-comment"># Also `from cpython cimport array`.</span>\n' +
-  '<span class="hljs-keyword">cdef</span> &lt;ctype&gt; *&lt;array_name&gt; [= &lt;coll/array&gt;]         <span class="hljs-comment"># Also `&lt;&lt;ctype&gt; *&gt; malloc(n_bytes)`.</span>\n';
+  '<span class="hljs-keyword">cdef</span> &lt;type&gt; &lt;var_name&gt; [= &lt;obj/var&gt;]                 <span class="hljs-comment"># Either Python or C type variable.</span>\n' +
+  '<span class="hljs-keyword">cdef</span> &lt;ctype&gt; *&lt;pointer_name&gt; [= &amp;&lt;var&gt;]              <span class="hljs-comment"># Use &lt;pointer&gt;[0] to get the value.</span>\n' +
+  '<span class="hljs-keyword">cdef</span> &lt;ctype&gt;[size] &lt;array_name&gt; [= &lt;coll/array&gt;]     <span class="hljs-comment"># Also `&lt;ctype&gt;[:] &lt;mview&gt; = &lt;array&gt;`.</span>\n' +
+  '<span class="hljs-keyword">cdef</span> &lt;ctype&gt; *&lt;array_name&gt; [= &lt;coll/array/pointer&gt;]  <span class="hljs-comment"># E.g. `&lt;&lt;ctype&gt; *&gt; malloc(n_bytes)`.</span>\n';
 
 const CYTHON_2 =
-  '<span class="hljs-keyword">cdef</span> &lt;type&gt; &lt;func_name&gt;(&lt;type&gt; [*]&lt;arg_name&gt;): ...  <span class="hljs-comment"># Omitted types default to `object`.</span>\n';
+  '<span class="hljs-keyword">cdef</span> &lt;type&gt; &lt;func_name&gt;(&lt;type&gt; [*]&lt;arg_name&gt;): ...   <span class="hljs-comment"># Omitted types default to `object`.</span>\n';
 
 const CYTHON_3 =
-  '<span class="hljs-keyword">cdef</span> <span class="hljs-class"><span class="hljs-keyword">class</span> &lt;<span class="hljs-title">class_name</span>&gt;:</span>                            <span class="hljs-comment"># Also `cdef struct &lt;struct_name&gt;:`.</span>\n' +
-  '    <span class="hljs-keyword">cdef</span> <span class="hljs-keyword">public</span> &lt;type&gt; [*]&lt;attr_name&gt;               <span class="hljs-comment"># Also `... &lt;ctype&gt; [*]&lt;field_name&gt;`.</span>\n' +
-  '    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span><span class="hljs-params">(self, &lt;type&gt; &lt;arg_name&gt;)</span>:</span>          <span class="hljs-comment"># Also `cdef __dealloc__(self):`.</span>\n' +
-  '        self.&lt;attr_name&gt; = &lt;arg_name&gt;               <span class="hljs-comment"># Also `... free(&lt;pointer/array&gt;)`.</span>\n';
+  '<span class="hljs-keyword">cdef</span> <span class="hljs-class"><span class="hljs-keyword">class</span> &lt;<span class="hljs-title">class_name</span>&gt;:</span>                             <span class="hljs-comment"># Also `cdef struct &lt;struct_name&gt;:`.</span>\n' +
+  '    <span class="hljs-keyword">cdef</span> <span class="hljs-keyword">public</span> &lt;type&gt; [*]&lt;attr_name&gt;                <span class="hljs-comment"># Also `... &lt;ctype&gt; [*]&lt;field_name&gt;`.</span>\n' +
+  '    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span><span class="hljs-params">(self, &lt;type&gt; &lt;arg_name&gt;)</span>:</span>           <span class="hljs-comment"># Also `cdef __dealloc__(self):`.</span>\n' +
+  '        self.&lt;attr_name&gt; = &lt;arg_name&gt;                <span class="hljs-comment"># Also `... free(&lt;array/pointer&gt;)`.</span>\n';
 
 const INDEX =
   '<li><strong>Ctrl+F / ⌘F is usually sufficient.</strong></li>\n' +
@@ -360,20 +362,20 @@ const DIAGRAM_1_B =
   '┗━━━━━━━━━━━━━━━━━━┷━━━━━━━━━━━━┷━━━━━━━━━━━━┷━━━━━━━━━━━━┛\n';
 
 const DIAGRAM_2_A =
-  '+--------------------+----------+----------+----------+----------+----------+\n' +
-  '|                    |  Number  |  Complex |   Real   | Rational | Integral |\n' +
-  '+--------------------+----------+----------+----------+----------+----------+\n';
+  '+--------------------+-----------+-----------+----------+----------+----------+\n' +
+  '|                    |   Number  |  Complex  |   Real   | Rational | Integral |\n' +
+  '+--------------------+-----------+-----------+----------+----------+----------+\n';
 
 const DIAGRAM_2_B =
-  '┏━━━━━━━━━━━━━━━━━━━━┯━━━━━━━━━━┯━━━━━━━━━━┯━━━━━━━━━━┯━━━━━━━━━━┯━━━━━━━━━━┓\n' +
-  '┃                    │  Number  │  Complex │   Real   │ Rational │ Integral ┃\n' +
-  '┠────────────────────┼──────────┼──────────┼──────────┼──────────┼──────────┨\n' +
-  '┃ int                │    ✓     │    ✓     │    ✓     │    ✓     │    ✓     ┃\n' +
-  '┃ fractions.Fraction │    ✓     │    ✓     │    ✓     │    ✓     │          ┃\n' +
-  '┃ float              │    ✓     │    ✓     │    ✓     │          │          ┃\n' +
-  '┃ complex            │    ✓     │    ✓     │          │          │          ┃\n' +
-  '┃ decimal.Decimal    │    ✓     │          │          │          │          ┃\n' +
-  '┗━━━━━━━━━━━━━━━━━━━━┷━━━━━━━━━━┷━━━━━━━━━━┷━━━━━━━━━━┷━━━━━━━━━━┷━━━━━━━━━━┛\n';
+  '┏━━━━━━━━━━━━━━━━━━━━┯━━━━━━━━━━━┯━━━━━━━━━━━┯━━━━━━━━━━┯━━━━━━━━━━┯━━━━━━━━━━┓\n' +
+  '┃                    │   Number  │  Complex  │   Real   │ Rational │ Integral ┃\n' +
+  '┠────────────────────┼───────────┼───────────┼──────────┼──────────┼──────────┨\n' +
+  '┃ int                │     ✓     │     ✓     │    ✓     │    ✓     │    ✓     ┃\n' +
+  '┃ fractions.Fraction │     ✓     │     ✓     │    ✓     │    ✓     │          ┃\n' +
+  '┃ float              │     ✓     │     ✓     │    ✓     │          │          ┃\n' +
+  '┃ complex            │     ✓     │     ✓     │          │          │          ┃\n' +
+  '┃ decimal.Decimal    │     ✓     │           │          │          │          ┃\n' +
+  '┗━━━━━━━━━━━━━━━━━━━━┷━━━━━━━━━━━┷━━━━━━━━━━━┷━━━━━━━━━━┷━━━━━━━━━━┷━━━━━━━━━━┛\n';
 
 const DIAGRAM_3_A =
   '+---------------+----------+----------+----------+----------+----------+\n';
@@ -425,16 +427,17 @@ const DIAGRAM_5_A =
   "+--------------+----------------+----------------+----------------+----------------+\n";
 
 const DIAGRAM_55_A =
-  "+---------------------------+--------------+--------------+----------------+\n";
+  "+---------------------------+----------------+--------------+--------------+\n";
 
 const DIAGRAM_55_B =
-  '┏━━━━━━━━━━━━━━━━━━━━━━━━━━━┯━━━━━━━━━━━━━━┯━━━━━━━━━━━━━━┯━━━━━━━━━━━━━━━━┓\n' +
-  '┃                           │  func(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>)  │ func(<span class="hljs-number">1</span>, y=<span class="hljs-number">2</span>) │ func(x=<span class="hljs-number">1</span>, y=<span class="hljs-number">2</span>) ┃\n' +
-  '┠───────────────────────────┼──────────────┼──────────────┼────────────────┨\n' +
-  '┃ <span class="hljs-title">func</span>(x, *args, **kwargs): │      ✓       │      ✓       │       ✓        ┃\n' +
-  '┃ <span class="hljs-title">func</span>(*args, y, **kwargs): │              │      ✓       │       ✓        ┃\n' +
-  '┃ <span class="hljs-title">func</span>(*, x, **kwargs):     │              │              │       ✓        ┃\n' +
-  '┗━━━━━━━━━━━━━━━━━━━━━━━━━━━┷━━━━━━━━━━━━━━┷━━━━━━━━━━━━━━┷━━━━━━━━━━━━━━━━┛\n';
+  '┏━━━━━━━━━━━━━━━━━━━━━━━━━━━┯━━━━━━━━━━━━━━━━┯━━━━━━━━━━━━━━┯━━━━━━━━━━━━━━┓\n' +
+  '┃                           │ func(x=<span class="hljs-number">1</span>, y=<span class="hljs-number">2</span>) │ func(<span class="hljs-number">1</span>, y=<span class="hljs-number">2</span>) │  func(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>)  ┃\n' +
+  '┠───────────────────────────┼────────────────┼──────────────┼──────────────┨\n' +
+  '┃ <span class="hljs-title">func</span>(x, *args, **kwargs): │       ✓        │      ✓       │      ✓       ┃\n' +
+  '┃ <span class="hljs-title">func</span>(*args, y, **kwargs): │       ✓        │      ✓       │              ┃\n' +
+  '┃ <span class="hljs-title">func</span>(*, x, **kwargs):     │       ✓        │              │              ┃\n' +
+  '┗━━━━━━━━━━━━━━━━━━━━━━━━━━━┷━━━━━━━━━━━━━━━━┷━━━━━━━━━━━━━━┷━━━━━━━━━━━━━━┛\n';
+
 
 const DIAGRAM_6_A =
   '+------------+------------+------------+------------+--------------+\n' +
@@ -460,25 +463,25 @@ const DIAGRAM_7_A =
 
 const DIAGRAM_7_B =
   "BaseException\n" +
-  " ├── SystemExit                   <span class='hljs-comment'># Raised by the sys.exit() function.</span>\n" +
-  " ├── KeyboardInterrupt            <span class='hljs-comment'># Raised when the user hits the interrupt key (ctrl-c).</span>\n" +
+  " ├── SystemExit                   <span class='hljs-comment'># Raised by the sys.exit() function (see #Exit for details).</span>\n" +
+  " ├── KeyboardInterrupt            <span class='hljs-comment'># Raised when the user hits the interrupt key (control-c).</span>\n" +
   " └── Exception                    <span class='hljs-comment'># User-defined exceptions should be derived from this class.</span>\n" +
   "      ├── ArithmeticError         <span class='hljs-comment'># Base class for arithmetic errors such as ZeroDivisionError.</span>\n" +
   "      ├── AssertionError          <span class='hljs-comment'># Raised by `assert &lt;exp&gt;` if expression returns false value.</span>\n" +
   "      ├── AttributeError          <span class='hljs-comment'># Raised when object doesn't have requested attribute/method.</span>\n" +
-  "      ├── EOFError                <span class='hljs-comment'># Raised by input() when it hits an end-of-file condition.</span>\n" +
+  "      ├── EOFError                <span class='hljs-comment'># Is raised by input() when it hits an end-of-file condition.</span>\n" +
   "      ├── LookupError             <span class='hljs-comment'># Base class for errors when a collection can't find an item.</span>\n" +
-  "      │    ├── IndexError         <span class='hljs-comment'># Raised when a sequence index is out of range.</span>\n" +
-  "      │    └── KeyError           <span class='hljs-comment'># Raised when a dictionary key or set element is missing.</span>\n" +
+  "      │    ├── IndexError         <span class='hljs-comment'># Raised when index of a sequence (list/str) is out of range.</span>\n" +
+  "      │    └── KeyError           <span class='hljs-comment'># Raised when a dictionary key or a set element is missing.</span>\n" +
   "      ├── MemoryError             <span class='hljs-comment'># Out of memory. May be too late to start deleting variables.</span>\n" +
   "      ├── NameError               <span class='hljs-comment'># Raised when nonexistent name (variable/func/class) is used.</span>\n" +
   "      │    └── UnboundLocalError  <span class='hljs-comment'># Raised when local name is used before it's being defined.</span>\n" +
-  "      ├── OSError                 <span class='hljs-comment'># Errors such as FileExistsError/TimeoutError (see #Open).</span>\n" +
-  "      │    └── ConnectionError    <span class='hljs-comment'># Errors such as BrokenPipeError/ConnectionAbortedError.</span>\n" +
-  "      ├── RuntimeError            <span class='hljs-comment'># Raised by errors that don't fall into other categories.</span>\n" +
+  "      ├── OSError                 <span class='hljs-comment'># Errors such as FileExistsError, TimeoutError (see #Open).</span>\n" +
+  "      │    └── ConnectionError    <span class='hljs-comment'># Errors such as BrokenPipeError and ConnectionAbortedError.</span>\n" +
+  "      ├── RuntimeError            <span class='hljs-comment'># Is raised by errors that don't fit into other categories.</span>\n" +
   "      │    ├── NotImplementedEr…  <span class='hljs-comment'># Can be raised by abstract methods or by unfinished code.</span>\n" +
   "      │    └── RecursionError     <span class='hljs-comment'># Raised if max recursion depth is exceeded (3k by default).</span>\n" +
-  "      ├── StopIteration           <span class='hljs-comment'># Raised when an empty iterator is passed to next().</span>\n" +
+  "      ├── StopIteration           <span class='hljs-comment'># Raised when exhausted (empty) iterator is passed to next().</span>\n" +
   "      ├── TypeError               <span class='hljs-comment'># When an argument of the wrong type is passed to function.</span>\n" +
   "      └── ValueError              <span class='hljs-comment'># When argument has the right type but inappropriate value.</span>\n";
 
@@ -801,11 +804,18 @@ function main() {
 
 function getMd() {
   var readme = readFile('README.md');
-  var readme = readme.replace("#semaphore-event-barrier", "#semaphoreeventbarrier");
-  var readme = readme.replace("#semaphore-event-barrier", "#semaphoreeventbarrier");
-  var readme = readme.replace("#dataframe-plot-encode-decode", "#dataframeplotencodedecode");
+  var readme = removeHyphensFromLinks(readme);
   const converter = new showdown.Converter();
   return converter.makeHtml(readme);
+}
+
+function removeHyphensFromLinks(md) {
+  return md.replace(/\(#([^)]+)\)/g, (_, anchor) => {
+    const match = anchor.match(/^(.*?)(-\d+)?$/);
+    const main = match[1].replace(/-/g, "");
+    const suffix = match[2] ?? "";
+    return `(#${main}${suffix})`;
+  });
 }
 
 function initDom(html) {
@@ -926,7 +936,7 @@ function fixHighlights() {
   $(`code:contains( + fib(n)`).html(CACHE);
   $(`code:contains(>>> def add)`).html(SPLAT);
   $(`code:contains(@debug(print_result=True))`).html(PARAMETRIZED_DECORATOR);
-  $(`code:contains(print/str/repr([<obj>]))`).html(REPR_USE_CASES);
+  $(`code:contains(print/str/repr([obj]))`).html(REPR_USE_CASES);
   $(`code:contains(shutil.copy)`).html(SHUTIL_COPY);
   $(`code:contains(os.rename)`).html(OS_RENAME);
   $(`code:contains(\'<n>s\')`).html(STRUCT_FORMAT);
@@ -968,8 +978,8 @@ function fixPageBreaksFile() {
 function fixPageBreaksStruct() {
   const formatDiv = $('#floatingpointtypesstructalwaysusesstandardsizes').parent().parent().parent().parent()
   move(formatDiv, 'floatingpointtypesstructalwaysusesstandardsizes')
-  move(formatDiv, 'integertypesuseacapitalletterforunsignedtypeminimumandstandardsizesareinbrackets')
-  move(formatDiv, 'forstandardsizesstartformatstringwith')
+  move(formatDiv, 'integertypesusecapitalletterforunsignedtypeminimumstandardsizesareinbrackets')
+  move(formatDiv, 'forstandardtypesizesandmanualalignmentpaddingstartformatstringwith')
 }
 
 function move(anchor_el, el_id) {
